@@ -14,13 +14,6 @@ const xss = require('xss-clean');
 const rateLimiter = require('express-rate-limit');
 const helmet = require('helmet');
 
-const corsOptions = {
-  "origin": "*",
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "preflightContinue": false,
-  "optionsSuccessStatus": 204,
-  "allowedHeaders": ["Content-Type"]
-}
 
 const connectDB = require("./db/connect");
 
@@ -50,7 +43,7 @@ app.use(
 );
 app.use(express.json());
 app.use(helmet());
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(xss());
 
 const port = process.env.PORT || 5000;
