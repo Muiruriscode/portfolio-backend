@@ -25,7 +25,7 @@ const getJob = async (req, res) => {
 const createJob = async (req, res) => {
   req.body.createdBy = req.user.userId;
   const job = await Job.create(req.body);
-  res.status(StatusCodes.CREATED).json({ job });
+  // res.status(StatusCodes.CREATED).json({ job });
   res
     .status(201)
     .json({ success: true, msg: "Thank you, I will get back to you" });
@@ -39,7 +39,7 @@ const updateJob = async (req, res) => {
   } = req;
 
   if (name === "" || description === "") {
-    throw new BadRequestError("Company or Position fields cannot be empty");
+    throw new BadRequestError("Please fill all the fields");
   }
   const job = await Job.findByIdAndUpdate(
     { _id: jobId, createdBy: userId },

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const hireSchema = mongoose.Schema({
-  name: {
+  category: {
     type: String,
     required: [true, "Please click on the categories to select one"],
   },
@@ -13,7 +13,7 @@ const hireSchema = mongoose.Schema({
     type: String,
     required: [true, "Please enter thre price"],
   },
-  package: {
+  myPackage: {
     type: String,
     required: [true, "please select category"],
   },
