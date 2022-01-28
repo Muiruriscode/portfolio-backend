@@ -22,12 +22,12 @@ app.use(express.json());
 app.use(errorHandlerMiddleware);
 
 app.use(
-  "https://dennis-muiruri-portfolio.herokuapp.com/api/v1/",
+  "/api/v1/",
   commentRouter
 );
-app.use("https://dennis-muiruri-portfolio.herokuapp.com/api/v1/", authRouter);
+app.use("/api/v1/", authRouter);
 app.use(
-  "https://dennis-muiruri-portfolio.herokuapp.com//api/v1/",
+  "/api/v1/",
   authenticateUser,
   jobsRouter
 );

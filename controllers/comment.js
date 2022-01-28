@@ -14,4 +14,7 @@ const comment = async (req, res) => {
     msg: `Thank you ${name} for your comment`,
   });
 };
-module.exports = { comment };
+const home = async (req, res) => {
+  res.status(200).send("<h1>Home</h1>");
+};
+module.exports = { comment, home };
