@@ -1,19 +1,21 @@
 const User = require("../models/user");
-const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
+
+const myEmail = require("../middleware/email");
 
 const register = async (req, res) => {
   const user = await User.create({ ...req.body });
   const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
+  myEmail(req.body.email, `${req.body.email} registered to muiruriscode`);
 };
 
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(200).send("Invalid Credentials");
+    throw new BadRequestError("Please enter all the fields");
   }
   const user = await User.findOne({ email });
   if (!user) {

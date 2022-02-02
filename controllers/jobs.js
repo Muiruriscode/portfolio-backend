@@ -1,5 +1,6 @@
 const Job = require("../models/hire");
 const { StatusCodes } = require("http-status-codes");
+const myEmail = require("../middleware/email");
 const { BadRequestError, NotFoundError } = require("../errors");
 
 const getAllJobs = async (req, res) => {
@@ -25,7 +26,10 @@ const getJob = async (req, res) => {
 const createJob = async (req, res) => {
   req.body.createdBy = req.user.userId;
   const job = await Job.create(req.body);
-  // res.status(StatusCodes.CREATED).json({ job });
+  myEmail(
+    req.user.email,
+    `job created by ${req.user.username} id ${req.user.userId} `
+  );
   res
     .status(201)
     .json({ success: true, msg: "Thank you, I will get back to you" });

@@ -1,5 +1,5 @@
 const Comment = require("../models/comment");
-const { BadRequestError } = require("../errors");
+const myEmail = require("../middleware/email");
 
 const comment = async (req, res) => {
   const { name, email, subject, comment } = req.body;
@@ -8,7 +8,8 @@ const comment = async (req, res) => {
       .status(200)
       .json({ success: false, msg: `Please enter all the fields` });
   }
-  const singleComment = await Comment.create({ ...req.body });
+  await Comment.create({ ...req.body });
+  myEmail(email, `comment from ${email}`);
   res.status(200).json({
     success: true,
     msg: `Thank you ${name} for your comment`,

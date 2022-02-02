@@ -11,7 +11,12 @@ const authenticationMiddleware = async (req, res, next) => {
 
   try {
     const payload = jwt.verify(tokens, process.env.JWT_SECRET);
-    req.user = { userId: payload.userId, username: payload.username };
+    console.log(payload);
+    req.user = {
+      userId: payload.userId,
+      username: payload.username,
+      email: payload.email,
+    };
     next();
   } catch (error) {
     console.log(error);
