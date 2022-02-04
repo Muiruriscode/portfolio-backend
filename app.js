@@ -43,7 +43,6 @@ app.use(
 );
 app.use(express.json());
 app.use(helmet());
-app.use(cors());
 app.use(xss());
 
 const port = process.env.PORT || 5000;
