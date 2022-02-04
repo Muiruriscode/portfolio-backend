@@ -5,7 +5,7 @@ const comment = async (req, res) => {
   const { name, email, subject, comment } = req.body;
   if (!name || !email || !comment || !subject) {
     return res
-      .status(200)
+      .status(400)
       .json({ success: false, msg: `Please enter all the fields` });
   }
   await Comment.create({ ...req.body });

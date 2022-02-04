@@ -1,7 +1,6 @@
 const Job = require("../models/hire");
 const { StatusCodes } = require("http-status-codes");
 const myEmail = require("../middleware/email");
-const { BadRequestError, NotFoundError } = require("../errors");
 
 const getAllJobs = async (req, res) => {
   const jobs = await Job.find({ createdBy: req.user.userId }).sort("createdAt");
@@ -18,7 +17,9 @@ const getJob = async (req, res) => {
     createdBy: userId,
   });
   if (!job) {
-    throw new NotFoundError(`No job with id ${jobId}`);
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ success: false, msg: `No job with id ${jobId}` });
   }
   res.status(StatusCodes.OK).json({ job });
 };
@@ -43,7 +44,9 @@ const updateJob = async (req, res) => {
   } = req;
 
   if (name === "" || description === "") {
-    throw new BadRequestError("Please fill all the fields");
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ success: false, msg: "Please fill all the fields" });
   }
   const job = await Job.findByIdAndUpdate(
     { _id: jobId, createdBy: userId },
@@ -51,7 +54,9 @@ const updateJob = async (req, res) => {
     { new: true, runValidators: true }
   );
   if (!job) {
-    throw new NotFoundError(`No job with id ${jobId}`);
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ success: false, msg: `No job with id ${jobId}` });
   }
   res.status(StatusCodes.OK).json({ job });
 };
@@ -67,7 +72,9 @@ const deleteJob = async (req, res) => {
     createdBy: userId,
   });
   if (!job) {
-    throw new NotFoundError(`No job with id ${jobId}`);
+    res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ success: false, msg: `No job with id ${jobId}` });
   }
   res.status(StatusCodes.OK).send();
 };

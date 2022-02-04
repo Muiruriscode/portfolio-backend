@@ -1,6 +1,5 @@
 const User = require("../models/user");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthenticatedError } = require("../errors");
 
 const myEmail = require("../middleware/email");
 
@@ -15,15 +14,21 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    throw new BadRequestError("Please enter all the fields");
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ success: false, msg: "Please enter all filelds" });
   }
   const user = await User.findOne({ email });
   if (!user) {
-    throw new UnauthenticatedError("Invalid Credentials");
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ success: false, msg: "Invalid Credentials" });
   }
   const isPasswordCorrect = await user.comparePassword(password);
   if (!isPasswordCorrect) {
-    throw new UnauthenticatedError("Invalid Credentials");
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ success: false, msg: "Invalid Credentials" });
   }
   // compare password
   const token = user.createJWT();
