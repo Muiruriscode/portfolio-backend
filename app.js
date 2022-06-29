@@ -2,6 +2,7 @@ require('dotenv').config()
 require('express-async-errors')
 const path = require('path')
 const express = require('express')
+const cors = require('cors')
 const authRouter = require('./routes/auth')
 const commentRouter = require('./routes/comment')
 const jobsRouter = require('./routes/jobs')
@@ -17,6 +18,7 @@ const helmet = require('helmet')
 const connectDB = require('./db/connect')
 
 const app = express()
+app.use(cors())
 
 app.use(express.json())
 
